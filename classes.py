@@ -17,6 +17,7 @@ class Wall():
         xobj = obj.start_pos[0]-obj.end_point[0]
         yobj = obj.start_pos[1]-obj.end_point[1]
         self.angle_reflect = obj.angle + 2 * np.arccos(np.abs((self.x*xobj+self.y*yobj)/(((self.x**2 + self.y**2)*(xobj**2 + yobj**2))**0.5)))
+        #obj.angle + 2 * np.arccos(np.pi/2 - np.arccos(np.pi/2 - np.arccos((-self.y*yobj)/(((self.x**2+self.y**2)*(xobj**2+yobj**2))**0.5) + (self.x*xobj)/(((self.x**2+self.y**2)*(xobj**2+yobj**2))**0.5))))
         return(self.angle_reflect, obj.brightness * 0.3)
 
     def intersecting(self, obj):

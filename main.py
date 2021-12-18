@@ -4,7 +4,7 @@ import queue
 import numpy as np
 
 # --- НАСТРАИВАЕМЫЕ ПЕРЕМЕННЫЕ ---
-number_of_rays = 100 # Max 360
+number_of_rays = 10 # Max 360
 wall_thicknes = 2
 boundarySpacing = 0
 # ------------------------------
