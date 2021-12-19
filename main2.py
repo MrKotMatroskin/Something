@@ -159,15 +159,20 @@ while not finished:
                     else:
                         continue
                 rays1.append(ray)
-
+                for i in rays1:
+                    print(i.angle, i.brightness)
                 if ray in rays2:
                     rays2.remove(ray)
+                for i in rays2:
+                    print(i.angle, i.brightness)
 
                 if reflect_angle[1] > 0.2:
                     new_ray = Ray(point, reflect_angle[0])
                     new_ray.brightness = reflect_angle[1]
                     counter += 1
                     rays2.append(new_ray)
+                for i in rays2:
+                    print(i.angle, i.brightness)
 
     # --- РИСОВАНИЕ ---
     surface.fill(BLACK)
