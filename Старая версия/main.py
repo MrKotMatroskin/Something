@@ -1,11 +1,10 @@
 import pygame
 from classes import Wall, Button, Ray
-import queue
 import numpy as np
 
 # --- НАСТРАИВАЕМЫЕ ПЕРЕМЕННЫЕ ---
-number_of_rays = 10 # Max 360
-wall_thicknes = 2
+number_of_rays = 1  # Max 360
+wall_thicknes = 1
 boundarySpacing = 0
 # ------------------------------
 
@@ -19,14 +18,12 @@ menuSurface = pygame.Surface(menuSize)
 pygame.display.set_caption("Rays")
 font = pygame.font.SysFont("monospace", 15)
 
-
 # Цвета
 WHITE = (100, 100, 100)
 BLACK = (0, 0, 0)
 RED = (255, 50, 50)
 YELLOW = (255, 255, 0)
 GREEN = (0, 255, 50)
-
 
 # Переменные для обработки
 walls = []
@@ -42,17 +39,22 @@ counter = 1
 # --- НАЧАЛЬНАЯ НАСТРОЙКА ---
 
 # Buttons
-resetButton = Button(10, size[1]-menuSize[1]+10, 70, 25, 'Очистить', RED)
+resetButton = Button(10, size[1] - menuSize[1] + 10, 70, 25, 'Очистить', RED)
 playButton = Button(10, resetButton.y + 10 + resetButton.height, 70, 25, 'Начать', GREEN)
+
 
 # Границы
 def addBoundaries():
     walls.insert(0, Wall((boundarySpacing, boundarySpacing), (size[0] - boundarySpacing, boundarySpacing)))
     walls.insert(0, Wall((boundarySpacing, boundarySpacing), (boundarySpacing, size[1] - boundarySpacing)))
-    walls.insert(0, Wall((boundarySpacing, size[1] - boundarySpacing), (size[0] - boundarySpacing, size[1] - boundarySpacing)))
-    walls.insert(0, Wall((size[0] - boundarySpacing, size[1] - boundarySpacing), (size[0] - boundarySpacing, boundarySpacing)))
+    walls.insert(0, Wall((boundarySpacing, size[1] - boundarySpacing),
+                         (size[0] - boundarySpacing, size[1] - boundarySpacing)))
+    walls.insert(0, Wall((size[0] - boundarySpacing, size[1] - boundarySpacing),
+                         (size[0] - boundarySpacing, boundarySpacing)))
+
 
 addBoundaries()
+
 
 # Рисование меню
 def drawMenu():
@@ -61,7 +63,7 @@ def drawMenu():
     menuSurface.set_alpha(126)
 
     # Окно меню рисования
-    surface.blit(menuSurface, (0, size[1]-menuSize[1]))
+    surface.blit(menuSurface, (0, size[1] - menuSize[1]))
 
     # Кнопки рисования
     resetButton.draw(surface)
@@ -70,34 +72,34 @@ def drawMenu():
 
 # -------- Основной цикл программы -----------
 while not finished:
-    
+
     # --- ГЛАВНЫЙ ЦИКЛ СОБЫТИЙ ---
-    for event in pygame.event.get(): 
+    for event in pygame.event.get():
         # Если пользователь хочет уйти
-        if event.type == pygame.QUIT: 
-              finished = True
+        if event.type == pygame.QUIT:
+            finished = True
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 finished = True
-        
+
         # Пользователь изменил размер окна
         if event.type == pygame.VIDEORESIZE:
             size = (event.w, event.h)
             surface = pygame.display.set_mode(size, pygame.RESIZABLE)
-            
+
             # Изменить границы
             walls = walls[4:]
             addBoundaries()
 
             # Кнопки изменения
-            resetButton.y = size[1]-menuSize[1]+10
+            resetButton.y = size[1] - menuSize[1] + 10
             playButton.y = resetButton.y + 10 + resetButton.height
 
         # Пользователь нажал кнопку мыши
         if event.type == pygame.MOUSEBUTTONUP:
             pos = pygame.mouse.get_pos()
-            
-            if event.button == 1: # Левый клик
+
+            if event.button == 1:  # Левый клик
                 # Проверка, нажал ли пользователь одну из кнопок
                 if resetButton.clicked(pos):
                     walls = []
@@ -111,12 +113,12 @@ while not finished:
                     else:
                         playButton.color = YELLOW
                         playButton.text = 'Остановить'
-                    
+
                     drawing = False
                     play = not play
-                    
-                elif not play: # Рисование стены
-                    
+
+                elif not play:  # Рисование стены
+
                     # Убедитесь, что пользователь уже рисует стену
                     if drawing:
                         # Завершить рисунок и добавьте новую стену
@@ -126,10 +128,10 @@ while not finished:
                         # Начать рисовать
                         drawing = True
                         wall_starting_pos = pos
-            
-            elif event.button == 3: # Правый клик
+
+            elif event.button == 3:  # Правый клик
                 drawing = False
- 
+
     # --- ИГРОВАЯ ЛОГИКА ---
     # Рассчитать новые лучи из источника
     if play:
@@ -138,12 +140,12 @@ while not finished:
         for i in range(0, number_of_rays):
             # Создать новый луч
             # все созданные лучи помещаем в массив rays2
-            ray = Ray(pygame.mouse.get_pos(), i * 2 * np.pi/number_of_rays)
+            ray = Ray(pygame.mouse.get_pos(), i * 2 * np.pi / number_of_rays)
             rays2.append(ray)
             counter = 1
         while counter > 0:
             counter = 0
-        # Проверить каждую стену
+            # Проверить каждую стену
             for ray in rays2:
                 closest = 10000000000000000000000
                 for wall in walls:
@@ -159,20 +161,15 @@ while not finished:
                     else:
                         continue
                 rays1.append(ray)
-                for i in rays1:
-                    print(i.angle, i.brightness)
+
                 if ray in rays2:
                     rays2.remove(ray)
-                for i in rays2:
-                    print(i.angle, i.brightness)
 
                 if reflect_angle[1] > 0.2:
                     new_ray = Ray(point, reflect_angle[0])
                     new_ray.brightness = reflect_angle[1]
                     counter += 1
                     rays2.append(new_ray)
-                for i in rays2:
-                    print(i.angle, i.brightness)
 
     # --- РИСОВАНИЕ ---
     surface.fill(BLACK)
@@ -180,7 +177,7 @@ while not finished:
     # Рисование рисующихся стен
     if drawing:
         pygame.draw.line(surface, WHITE, wall_starting_pos, pygame.mouse.get_pos(), wall_thicknes)
-    
+
     # Рисование существующих стен
     for wall in walls:
         pygame.draw.line(surface, WHITE, wall.A, wall.B, wall_thicknes)
@@ -190,10 +187,8 @@ while not finished:
         pygame.draw.circle(surface, WHITE, pygame.mouse.get_pos(), 10)
 
         for ray in rays1:
-            pygame.draw.line(surface, (100*ray.brightness, 100*ray.brightness, 100*ray.brightness), ray.start_pos, ray.end_point, 1)
-            print(ray.angle)
-        print("все")
-
+            pygame.draw.line(surface, (100 * ray.brightness, 100 * ray.brightness, 100 * ray.brightness), ray.start_pos,
+                             ray.end_point, 1)
 
     # Рисование меню и кнопок
     drawMenu()
@@ -202,5 +197,5 @@ while not finished:
     pygame.display.flip()
 
     clock.tick(60)
- 
+
 pygame.quit()

@@ -7,40 +7,20 @@ import random
 # Класс стены
 class Wall():
     def __init__(self, A, B):
-        # направление вектора
-        if A[0] != B[0]:
-            if A[0] < B[0]:
-                self.A = A
-                self.B = B
-            else:
-                self.A = B
-                self.B = A
-        else:
-            if A[1] < B[1]:
-                self.A = A
-                self.B = B
-            else:
-                self.A = B
-                self.B = A
+        # A, B - концы стены
+        self.A = A
+        self.B = B
         # проекции стены
-        self.x = self.B[0] - self.A[0]
-        self.y = self.B[1] - self.A[1]
-        self.a = self.x/((self.x**2 + self.y**2)**0.5)
-        self.b = self.y/((self.x**2 + self.y**2)**0.5)
+        self.x = self.A[0] - self.B[0]
+        self.y = self.A[1] - self.B[1]
         self.reflect_angle = 0
-        self.point = ()
+        self.point = []
 
     def reflection(self, obj):
         #проекции луча
         xobj = -obj.start_pos[0]+obj.end_point[0]
-        yobj = obj.start_pos[1]+obj.end_point[1]
-        u = xobj / ((xobj**2 + yobj**2)**0.5)
-        v = yobj / ((xobj ** 2 + yobj ** 2) ** 0.5)
-        u1 = (self.a**2-self.b**2)*u + 2*self.a*self.b*v
-        v1 = 2*self.a*self.b*u - (self.a**2-self.b**2)*v
-        self.angle_reflect = atan2(u1, v1)
-        print(atan2(u1, v1))
-            #obj.angle + 2 * np.arccos(np.abs((self.x*xobj+self.y*yobj)/(((self.x**2 + self.y**2)*(xobj**2 + yobj**2))**0.5)))
+        yobj = -obj.start_pos[1]+obj.end_point[1]
+        self.angle_reflect = obj.angle + 2 * np.arccos(np.abs((self.x*xobj+self.y*yobj)/(((self.x**2 + self.y**2)*(xobj**2 + yobj**2))**0.5)))
         return(self.reflect_angle, obj.brightness * 0.3)
 
     def intersecting(self, obj):
