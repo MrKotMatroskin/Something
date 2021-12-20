@@ -8,7 +8,6 @@ wall_thicknes = 2
 boundarySpacing = 0
 # ------------------------------
 
-
 # Настройки
 pygame.init()
 size = (700, 500)
@@ -18,14 +17,12 @@ menuSurface = pygame.Surface(menuSize)
 pygame.display.set_caption("Rays")
 font = pygame.font.SysFont("monospace", 15)
 
-
 # Цвета
 WHITE = (100, 100, 100)
 BLACK = (0, 0, 0)
 RED = (255, 50, 50)
 YELLOW = (255, 255, 0)
 GREEN = (0, 255, 50)
-
 
 # Переменные для обработки
 walls = []

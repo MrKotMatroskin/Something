@@ -3,11 +3,10 @@ from classes import Wall, Button, Ray
 import numpy as np
 
 # --- НАСТРАИВАЕМЫЕ ПЕРЕМЕННЫЕ ---
-number_of_rays = 1  # Max 360
+number_of_rays = 50  # Max 360
 wall_thicknes = 1
 boundarySpacing = 0
 # ------------------------------
-
 
 # Настройки
 pygame.init()

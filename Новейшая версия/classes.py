@@ -1,7 +1,6 @@
 import pygame
 import numpy as np
 
-
 # Класс стены
 class Wall():
     def __init__(self, A, B):

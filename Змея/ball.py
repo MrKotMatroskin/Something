@@ -8,7 +8,6 @@ import config
 Собственная энергия каждого шарика всегда равна 1
 '''
 
-
 class Ball():
     def __init__(self, x, y, color, r):
         '''

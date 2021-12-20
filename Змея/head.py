@@ -10,8 +10,6 @@ import config
 Не решенные проблемы:
 3) Прорисовка глаз змеи, и их поворот при повороте змеи
 '''
-
-
 class Head(Ball):
     def __init__(self, x, y, color):
         self.x = x
